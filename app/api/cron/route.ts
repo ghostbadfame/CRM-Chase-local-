@@ -9,7 +9,10 @@ export async function GET(request: Request) {
 
   const startOfDay = SOTD(today);
   const endOfDay = EOTD(today);
-
+  const currentDate = new Date();
+  const nextDate = new Date();
+  nextDate.setDate(currentDate.getDate() + 1);
+  nextDate.setUTCHours(0, 0, 0, 0);
   try {
     const newStatus = await db.lead.updateMany({
       where: {
@@ -28,6 +31,7 @@ export async function GET(request: Request) {
       data: {
         // Updating 'followupDate' to the new date value
         status: "pending",
+        assignToDate:nextDate
       },
     });
 
@@ -46,8 +50,8 @@ export async function GET(request: Request) {
       },
       data: {
         // Updating 'followupDate' to the new date value
-        followupDate: startOfDay,
-        assignToDate: startOfDay
+        followupDate: nextDate,
+        assignToDate: nextDate
       },
     });
 
