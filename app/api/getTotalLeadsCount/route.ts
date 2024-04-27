@@ -33,12 +33,18 @@ export async function GET(request: Request) {
             followupDate: {
                gte: startOfDay(new Date()),
               lte: endOfDay(new Date()),
+              not: {
+                equals: new Date(new Date().setHours(18, 30, 0, 0)),
+              },
             },
           },
           {
             assignToDate: {
                gte: startOfDay(new Date()),
               lte: endOfDay(new Date()),
+              not: {
+                equals: new Date(new Date().setHours(18, 30, 0, 0)),
+              },
             },
           },
         ],
@@ -59,12 +65,18 @@ export async function GET(request: Request) {
             followupDate: {
                gte: startOfDay(new Date()),
               lte: endOfDay(new Date()),
+              not: {
+                equals: new Date(new Date().setHours(18, 30, 0, 0)),
+              },
             },
           },
           {
             assignToDate: {
                gte: startOfDay(new Date()),
               lte: endOfDay(new Date()),
+              not: {
+                equals: new Date(new Date().setHours(18, 30, 0, 0)),
+              },
             },
           },
         ],
@@ -85,12 +97,18 @@ export async function GET(request: Request) {
             followupDate: {
                gte: startOfDay(new Date()),
               lte: endOfDay(new Date()),
+              not: {
+                equals: new Date(new Date().setHours(18, 30, 0, 0)),
+              },
             },
           },
           {
             assignToDate: {
                gte: startOfDay(new Date()),
               lte: endOfDay(new Date()),
+              not: {
+                equals: new Date(new Date().setHours(18, 30, 0, 0)),
+              },
             },
           },
         ],
