@@ -1,0 +1,137 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String   @id @unique @default(uuid())
+  email             String   @unique
+  username          String
+  password          String
+  role              Role     @default(BASIC)
+  userType          String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  address           String?
+  altContact        String?
+  city              String?
+  contact           String?  @unique
+  govtID            String   @unique
+  referenceEmployee String?
+  reportingManager  String?
+  empNo             String?  @unique
+  restricted        Boolean  @default(false)
+  leads             Lead[]
+}
+
+model Lead {
+  leadNo           String?      @unique
+  fullName         String
+  contact          String       @unique
+  altContact       String?
+  address          String
+  city             String
+  leadSource       String
+  actualSource     String
+  siteStage        String
+  salesPerson      String
+  clientStatus     String?      @default("Welcome")
+  priority         String?      @default("p3")
+  status           String?      @default("pending")
+  assignTo         String?
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+  employee_id      String
+  lead_id          String       @id @unique @default(uuid())
+  previous_id      String?
+  followupDate     DateTime?    @default(now())
+  assignToDate     DateTime?    @default(now())
+  lastDate         DateTime?    @default(now())
+  afterSaleService Boolean?
+  engineerTask     String?
+  technicianTask   String?
+  employee         User         @relation(fields: [employee_id], references: [id], onUpdate: NoAction)
+  remark           Remarks[]
+  designs          designs[]
+  dimensions       dimensions[]
+}
+
+model ChannelPartner {
+  channelPartnerNo   String?                @unique
+  fullName           String
+  channelPartnerId   String                 @id @unique @default(uuid())
+  createdAt          DateTime               @default(now())
+  followupDate       DateTime?              @default(now())
+  updatedAt          DateTime               @updatedAt
+  lastDate           DateTime?              @default(now())
+  address            String
+  city               String
+  contact            String                 @unique
+  altContact         String?
+  birthday           DateTime?
+  weddingAnniversary DateTime?
+  userType           String
+  firm               String?
+  remarks            ChannelPartnerRemark[]
+}
+
+model ChannelPartnerRemark {
+  remarkId             String         @id @unique @default(uuid())
+  channelPartnerNo     String
+  remark               String
+  empName              String
+  empNo                String
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
+  followUpDate         DateTime?
+  channelPartnerID     String
+  remarkchannelPartner ChannelPartner @relation(fields: [channelPartnerID], references: [channelPartnerId], onUpdate: NoAction)
+}
+
+model Remarks {
+  remarkId         String    @id @unique @default(uuid())
+  leadNO           String
+  empNo            String
+  remark           String
+  empName          String
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  afterSaleService Boolean?
+  clientStatus     String?
+  engineerTask     String?
+  siteStage        String?
+  technicianTask   String?
+  followUpDate     DateTime?
+  leads            Lead      @relation(fields: [leadNO], references: [leadNo], onUpdate: NoAction)
+}
+
+model designs {
+  designId  String   @id @unique @default(uuid())
+  leadNO    String
+  empNo     String
+  empName   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  design    String
+  leads     Lead     @relation(fields: [leadNO], references: [leadNo], onUpdate: NoAction)
+}
+
+model dimensions {
+  leadNO      String
+  empNo       String
+  empName     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  dimension   String
+  dimensionId String   @id @unique @default(uuid())
+  leads       Lead     @relation(fields: [leadNO], references: [leadNo])
+}
+
+enum Role {
+  BASIC
+  ADMIN
+}
